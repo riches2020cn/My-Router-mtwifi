@@ -207,7 +207,7 @@ jobs:
     #    mv /tmp/OpenClash/luci-app-openclash package/
 
         # 删除临时目录
-    #    rm -rf /tmp/OpenClash
+    #    rm -rf /tmp/OpenClash && rm -rf tmp
                 
     - name: Configuration Customization - Build_ax6000_immortalwrt_237_msd_lite_110m 
       run: |
