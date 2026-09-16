@@ -198,7 +198,7 @@ jobs:
     #    mv /tmp/OpenClash/luci-app-openclash package/
 
         # 删除临时目录
-    #    rm -rf /tmp/OpenClash
+    #    rm -rf /tmp/OpenClash && rm -rf tmp
     
     # 范例 1: 添加源码中没有的第三方插件，必须放在 feeds命令之后，注意拉取命令的保存路径，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
     #- name: Import external feeds - OpenAppFilter
