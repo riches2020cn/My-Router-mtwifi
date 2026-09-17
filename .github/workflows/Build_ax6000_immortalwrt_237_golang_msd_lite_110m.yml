@@ -346,7 +346,7 @@ jobs:
         echo "RELEASE_NAME=${FIRMWARE_TYPE} [$(date +'%Y.%m.%d')]" >> $GITHUB_ENV
 
     - name: Upload firmware to Release (发布至 GitHub Release)
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       if: success() && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
