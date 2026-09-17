@@ -211,7 +211,7 @@ jobs:
         # 3. 检查是否成功替换 Golang1.26 版本，如果退出，说明 golang 版本与 Passwall 要求的 golang 版本对不上。通过以下方法确认版本已经不一致，请打开 https://github.com/Openwrt-Passwall/openwrt-passwall-packages，打开 geoview/Makefile 文件，搜索“golang”并获取相关路径：/feeds/packages/lang/golang/golang-package.mk，确认能在本地仓库 golang1.26 目录下找到“golang-package.mk”文件，且路径一致，否则就是版本对不上（运行脚本将 golang1.26 目录复制并改名为 golang，所以路径等于文件中的 /feeds/packages/lang/golang 目录）
         echo "=== 检查是否成功替换 Golang1.26 版本 ==="
         grep -E "PKG_VERSION:=" feeds/packages/lang/golang/golang1.26/Makefile || {
-          echo "ERROR: Golang 替换失败！"
+          echo "ERROR: golang1.26 替换失败！"
           exit 1
         }
         
