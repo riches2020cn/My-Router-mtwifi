@@ -152,7 +152,33 @@ jobs:
       run: |
         ./scripts/feeds update -a        
 
-       #======= 编入第三方 msd_lite 插件，解决 IPTV 卡顿（置于更新和安装 feeds 命令之间）=======
+       #======= 解决 Passwall 的 Geoview 报错问题（置于更新和安装 feeds 命令之间）=======
+    - name: 升级 Passwall 工具链为 Golang 1.26
+      working-directory: /builder/openwrt
+      run: |
+        # 1. 直接将本地仓库根目录下的 golang1.26 复制到 feeds 目录
+        rm -rf feeds/packages/lang/golang1.26        
+        mkdir -p feeds/packages/lang/golang1.26
+        cp -rf "$GITHUB_WORKSPACE/golang1.26/." feeds/packages/lang/golang1.26/
+
+        # 2. 强制更新索引并安装 golang1.26（同时刷入 feeds 索引列表）
+        ./scripts/feeds update -f packages
+        ./scripts/feeds install -p packages -f golang1.26
+        
+        # 3. 删除临时目录
+        rm -rf tmp
+        
+    - name: Install feeds（安装 feeds）
+      working-directory: /builder/openwrt
+      run: |
+        ./scripts/feeds install -a
+
+    - name: Install feeds（安装 feeds）
+      working-directory: /builder/openwrt
+      run: |
+        ./scripts/feeds install -a
+        
+       #======= 编入第三方 msd_lite 插件，解决 IPTV 卡顿（更新和安装 feeds 命令之后）=======
     - name: 编入第三方 msd_lite 插件
       working-directory: /builder/openwrt
       run: |
@@ -160,8 +186,11 @@ jobs:
         rm -rf feeds/luci/applications/luci-app-msd_lite
         git clone https://github.com/ximiTech/msd_lite.git package/msd_lite
         git clone https://github.com/ximiTech/luci-app-msd_lite.git package/luci-app-msd_lite
+        
+        # 删除临时目录
+        rm -rf tmp
                
-       # ======== 1. 编译 OpenClash 最新版，使用 package 编译法（置于更新和安装 feeds 命令之间）推荐 =========
+       # ======== 1. 编译 OpenClash 最新版，使用 package 编译法（更新和安装 feeds 命令之后）推荐 =========
        # 不推荐使用写入 ./feeds.conf.default 编译法
        # immortalwrt 插件库已经包含 OpenClash，若源码被删除或编译 OpenClash 最新版，使用以下命令自行编译，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
     #- name: Import Official Recommended OpenClash
@@ -180,7 +209,7 @@ jobs:
         # 删除临时目录
     #    rm -rf /tmp/OpenClash && rm -rf tmp
 
-       # ======== 2. 编译 Passwall 最新版，使用 package 编译法（置于更新和安装 feeds 命令之间）推荐 =========
+       # ======== 2. 编译 Passwall 最新版，使用 package 编译法（更新和安装 feeds 命令之后）推荐 =========
        # 不推荐使用写入 ./feeds.conf.default 编译法
        # immortalwrt 插件库已经包含 OpenClash，若源码被删除或编译 Passwall 最新版，使用以下命令自行编译，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
     - name: Import Official Recommended Passwall
@@ -197,53 +226,33 @@ jobs:
         # 删除临时目录
         rm -rf tmp
 
-       #======= 解决 Passwall 的 Geoview 报错问题（置于更新和安装 feeds 命令之间）=======
-    - name: 升级 Passwall 工具链为 Golang 1.26
+    - name: 修改 passwall-packages 目录下所有 Makefile 文件中 golang 路径指向 golang1.26
       working-directory: /builder/openwrt
       run: |
-        # 1. 直接将本地仓库根目录下的 golang1.26 复制到 feeds 目录
-        rm -rf feeds/packages/lang/golang1.26        
-        mkdir -p feeds/packages/lang/golang1.26
-        cp -rf "$GITHUB_WORKSPACE/golang1.26/." feeds/packages/lang/golang1.26/
-
-        # 2. 精准改写 package/passwall-packages 下 Go 编译依赖指向 golang1.26
+        # 1. 修改 passwall-packages 目录下所有 Makefile 文件中 golang 路径指向 golang1.26
         find package/passwall-packages -type f -name "Makefile" \
           -exec sed -i \
             -e 's|\<golang/golang-package.mk\>|golang1.26/golang-package.mk|g' \
             -e 's|\<golang/host\>|golang1.26/host|g' {} +
-
-        # 3. 强制更新索引并安装 golang1.26（同时刷入 feeds 索引列表）
-        ./scripts/feeds update -f packages
-        ./scripts/feeds install -p packages -f golang1.26
         
-        # 4. 检查是否成功替换 Golang1.26 版本，如果退出，说明 golang 版本与 Passwall 要求的 golang 版本对不上。通过以下方法确认版本已经不一致，请打开 https://github.com/Openwrt-Passwall/openwrt-passwall-packages，打开 geoview/Makefile 文件，搜索“golang”并获取相关路径：/feeds/packages/lang/golang/golang-package.mk，确认能在本地仓库 golang1.26 目录下找到“golang-package.mk”文件，且路径一致，否则就是版本对不上（运行脚本将 golang1.26 目录复制并改名为 golang，所以路径等于文件中的 /feeds/packages/lang/golang 目录）
+        # 2. 检查是否成功替换 Golang1.26 版本，如果退出，说明 golang 版本与 Passwall 要求的 golang 版本对不上。通过以下方法确认版本已经不一致，请打开 https://github.com/Openwrt-Passwall/openwrt-passwall-packages，打开 geoview/Makefile 文件，搜索“golang”并获取相关路径：/feeds/packages/lang/golang/golang-package.mk，确认能在本地仓库 golang1.26 目录下找到“golang-package.mk”文件，且路径一致，否则就是版本对不上（运行脚本将 golang1.26 目录复制并改名为 golang，所以路径等于文件中的 /feeds/packages/lang/golang 目录）
         echo "=== 检查是否成功替换 Golang1.26 版本 ==="
         grep -E "PKG_VERSION:=" feeds/packages/lang/golang1.26/golang1.26/Makefile || {
           echo "ERROR: golang1.26 替换失败！"
           exit 1
         }
         
-        # 5. 检查修改结果（抽查核心组件 xray-core 和 sing-box），检查失败会自动退出
+        # 3. 检查修改结果（抽查核心组件 xray-core 和 sing-box），检查失败会自动退出
         echo "=== 检查 package/passwall-packages 下 所有的 Makefile 文件中的 Go 编译依赖指向 golang1.26 ==="
         grep -n "golang1.26" package/passwall-packages/xray-core/Makefile && \
         grep -n "golang1.26" package/passwall-packages/sing-box/Makefile || {
           echo "ERROR: Passwall Packages Makefile 文件中路径错误替换失败！"
           exit 1
         }
-
-        # 6. 删除临时目录
-        rm -rf tmp
         
-    - name: Install feeds（安装 feeds）
-      working-directory: /builder/openwrt
-      run: |
-        ./scripts/feeds install -a
-
-    - name: Install feeds（安装 feeds）
-      working-directory: /builder/openwrt
-      run: |
-        ./scripts/feeds install -a
-                
+        # 删除临时目录
+        rm -rf tmp        
+        
     - name: Configuration Customization - DIY_ax6000_immortalwrt_237_golang_msd_lite_110m 
       run: |
         # 在升级的分支，找到“Quickstart”下方：5. 看到 "# MT7986" 配置文件命令：cp -f defconfig/mt7986-ax6000.config .config 可确认该分支包含 红米AX6000官方原厂闭源
