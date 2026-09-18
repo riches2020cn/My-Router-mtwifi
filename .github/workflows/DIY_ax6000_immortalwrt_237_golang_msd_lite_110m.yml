@@ -152,7 +152,7 @@ jobs:
       run: |
         ./scripts/feeds update -a        
 
-       #======= 解决 Passwall 的 Geoview 报错问题（置于更新和安装 feeds 命令之间）=======
+       #======= 1. 解决 Passwall 的 Geoview 报错问题（置于更新和安装 feeds 命令之间）=======
     - name: 升级 Passwall 工具链为 Golang 1.26
       working-directory: /builder/openwrt
       run: |
@@ -226,6 +226,7 @@ jobs:
         # 删除临时目录
         rm -rf tmp
 
+       #======= 2. 解决 Passwall 的 Geoview 报错问题（拉取 Passwall，更新和安装 feeds 命令之后）=======
     - name: 修改 passwall-packages 目录下所有 Makefile 文件中 golang 路径指向 golang1.26
       working-directory: /builder/openwrt
       run: |
