@@ -180,7 +180,19 @@ jobs:
       run: |
         ./scripts/feeds install -a
 
-       # ======== 1. 编译 OpenClash 最新版，（使用 package 编译法）推荐 =========
+       #======= 编入第三方 msd_lite 插件，解决 IPTV 卡顿（更新和安装 feeds 命令之后）=======
+    - name: 编入第三方 msd_lite 插件
+      working-directory: /builder/openwrt
+      run: |
+        rm -rf feeds/packages/net/msd_lite
+        rm -rf feeds/luci/applications/luci-app-msd_lite
+        git clone https://github.com/ximiTech/msd_lite.git package/msd_lite
+        git clone https://github.com/ximiTech/luci-app-msd_lite.git package/luci-app-msd_lite
+
+        # 删除临时目录
+        rm -rf tmp
+        
+       # ======== 1. 编译 OpenClash 最新版，使用 package 编译法（更新和安装 feeds 命令之后）推荐 =========
        # 不推荐使用写入 ./feeds.conf.default 编译法
        # immortalwrt 插件库已经包含 OpenClash，若源码被删除或编译 OpenClash 最新版，使用以下命令自行编译，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
     #- name: Import Official Recommended OpenClash
@@ -199,7 +211,7 @@ jobs:
         # 删除临时目录
     #    rm -rf /tmp/OpenClash && rm -rf tmp
 
-       # ======== 2. 编译 Passwall 最新版，使用 package 编译法（使用 package 编译法）推荐 =========
+       # ======== 2. 编译 Passwall 最新版，使用 package 编译法（更新和安装 feeds 命令之后）推荐 =========
        # 不推荐使用写入 ./feeds.conf.default 编译法
        # immortalwrt 插件库已经包含 OpenClash，若源码被删除或编译 Passwall 最新版，使用以下命令自行编译，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
     - name: Import Official Recommended Passwall
@@ -212,18 +224,6 @@ jobs:
         # 移除 openwrt feeds 过时的luci版本
         rm -rf feeds/luci/applications/luci-app-passwall
         git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
-
-        # 删除临时目录
-        rm -rf tmp
-
-       #======= 编入第三方 msd_lite 插件，解决 IPTV 卡顿（置于更新和安装 feeds 命令之间）=======
-    - name: 编入第三方 msd_lite 插件
-      working-directory: /builder/openwrt
-      run: |
-        rm -rf feeds/packages/net/msd_lite
-        rm -rf feeds/luci/applications/luci-app-msd_lite
-        git clone https://github.com/ximiTech/msd_lite.git package/msd_lite
-        git clone https://github.com/ximiTech/luci-app-msd_lite.git package/luci-app-msd_lite
 
         # 删除临时目录
         rm -rf tmp
