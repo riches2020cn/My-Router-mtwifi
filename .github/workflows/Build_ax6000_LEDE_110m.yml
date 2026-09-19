@@ -73,7 +73,7 @@ jobs:
       env: 
         REPO_URL: https://github.com/coolsnowwolf/lede
       run: |
-        git clone --depth 1 -b master $REPO_URL /builder/openwrt || { echo 'Git clone failed!'; exit 1; }
+        git clone --depth 1 -b master "$REPO_URL" /builder/openwrt || { echo 'Git clone failed!'; exit 1; }
         
         # ======== 编译下方插件，请先去掉注释 ======== 
         #cd /builder/openwrt
