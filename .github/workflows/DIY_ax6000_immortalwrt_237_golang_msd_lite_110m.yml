@@ -163,7 +163,7 @@ jobs:
 
         # 2. 强制更新索引并安装 golang1.27（同时刷入 feeds 索引列表）
         ./scripts/feeds update -f packages
-        ./scripts/feeds install golang1.27
+        ./scripts/feeds install -p packages -f golang1.27
         
         # 3. 删除临时目录
         rm -rf tmp
@@ -231,9 +231,17 @@ jobs:
       working-directory: /builder/openwrt
       run: |
         # 1. 修改 passwall-packages 目录下所有 Makefile 文件中 golang 路径指向 golang1.27
-        find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
-          -e 's|\<golang/golang-package.mk\>|golang1.27/golang-package.mk|g' \
-          -e 's|\<golang/host\>|golang1.27/host|g' {} +  
+        TARGET_DIRS=()
+        [ -d "package/dae" ] && TARGET_DIRS+=("package/dae")
+        [ -d "package/passwall-packages" ] && TARGET_DIRS+=("package/passwall-packages")
+
+        if [ ${#TARGET_DIRS[@]} -gt 0 ]; then
+          find "${TARGET_DIRS[@]}" -name "Makefile" -type f -exec sed -i \
+            -e 's|\<golang/golang-package.mk\>|golang1.27/golang-package.mk|g' \
+            -e 's|\<golang/host\>|golang1.27/host|g' {} +
+        else
+          echo "WARNING: 未找到 package/dae 或 package/passwall-packages 目录，忽略即可！"
+        fi
 
         # 2. 检查是否成功替换 golang1.27 版本，如果退出，说明 golang 版本与 Passwall 要求的 golang 版本对不上。通过以下方法确认版本已经不一致，请打开 https://github.com/Openwrt-Passwall/openwrt-passwall-packages，打开 geoview/Makefile 文件，搜索“golang”并获取相关路径：/feeds/packages/lang/golang/golang-package.mk，确认能在本地仓库 golang1.27 目录下找到“golang-package.mk”文件，且路径一致，否则就是版本对不上（将 golang1.27 目录复制到 /feeds/packages/lang/ 目录下与 golang 并存）
         echo "=== 检查是否成功替换 golang1.27 版本 ==="
