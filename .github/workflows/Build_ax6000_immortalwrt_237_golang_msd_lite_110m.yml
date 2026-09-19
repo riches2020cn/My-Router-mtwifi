@@ -153,12 +153,12 @@ jobs:
         ./scripts/feeds update -a        
 
        #======= 解决 Passwall 的 Geoview 报错问题（置于更新和安装 feeds 命令之间）=======
-    - name: 升级 Passwall 工具链为 Golang 1.26
+    - name: 升级 Passwall 工具链为 golang1.27
       working-directory: /builder/openwrt
       run: |
-        # 1. 直接将本地仓库根目录下的 golang1.26 复制到 feeds 目录，并改名 golang
+        # 1. 直接将本地仓库根目录下的 golang1.27 复制到 feeds 目录，并改名 golang
         rm -rf feeds/packages/lang/golang
-        cp -rf "$GITHUB_WORKSPACE/golang1.26" feeds/packages/lang/golang
+        cp -rf "$GITHUB_WORKSPACE/golang1.27" feeds/packages/lang/golang
         
         # 2. 删除临时目录，确保系统重新扫描新 replace 进来的 Makefile
         rm -rf tmp
@@ -206,7 +206,7 @@ jobs:
 
        # ======== 2. 编译 Passwall 最新版，使用 package 编译法（更新和安装 feeds 命令之后）推荐 =========
        # 不推荐使用写入 ./feeds.conf.default 编译法
-       # immortalwrt 插件库已经包含 OpenClash，若源码被删除或编译 Passwall 最新版，使用以下命令自行编译，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
+       # immortalwrt 插件库已经包含 Passwall ，若源码被删除或编译最新版，使用以下命令自行编译，打开 immortalwrt官方插件库查询：https://github.com/immortalwrt/immortalwrt（选择 openwrt-24.10分支，打开 feeds.conf.default文件，再打开luci仓库找到“applications”查询插件）
     - name: Import Official Recommended Passwall
       working-directory: /builder/openwrt
       run: |
