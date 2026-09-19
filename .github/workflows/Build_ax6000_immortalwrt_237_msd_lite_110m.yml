@@ -171,7 +171,7 @@ jobs:
       run: |
         ./scripts/feeds update -a        
 
-       #=======编入第三方 msd_lite 插件，解决 IPTV 卡顿=======
+       #======= 编入第三方 msd_lite 插件，解决 IPTV 卡顿（使用 package 编译法，更新和安装 feeds 命令之后）=======
     - name: 编入第三方 msd_lite 插件
       working-directory: /builder/openwrt
       run: |
