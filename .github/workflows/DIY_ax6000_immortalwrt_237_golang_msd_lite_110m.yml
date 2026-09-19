@@ -163,7 +163,7 @@ jobs:
 
         # 2. 强制更新索引并安装 golang1.27（同时刷入 feeds 索引列表）
         ./scripts/feeds update -f packages
-        ./scripts/feeds install -p packages -f golang1.27
+        ./scripts/feeds install golang1.27
         
         # 3. 删除临时目录
         rm -rf tmp
