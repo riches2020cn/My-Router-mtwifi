@@ -156,7 +156,7 @@ jobs:
     - name: 升级 Passwall 工具链为 golang1.27
       working-directory: /builder/openwrt
       run: |
-        # 1. 直接将本地仓库根目录下的 golang1.27 复制到 feeds 目录，并改名 golang，没有复制成功，自动退出
+        # 1. 直接将本地仓库根目录下的 golang1.27 复制到 feeds 目录，并改名 golang，若失败自动退出
         if [ -d "$GITHUB_WORKSPACE/golang1.27" ]; then
           rm -rf feeds/packages/lang/golang
           cp -rf "$GITHUB_WORKSPACE/golang1.27" feeds/packages/lang/golang
