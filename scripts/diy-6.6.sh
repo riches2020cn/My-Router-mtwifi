@@ -10,7 +10,7 @@ cp -rf "$GOLANG126_SRC_DIR/." "$GOLANG126_FEED_DIR/"
 ./scripts/feeds update -f packages
 ./scripts/feeds install golang1.27
 
-# passwall daed use golang1.27/host
+# passwall daed use golang1.27/host（修改 package/dae 和 package/passwall-packages 目录下所有 Makefile 文件，指向 golang1.27）
 find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
   -e 's|\<golang/golang-package.mk\>|golang1.27/golang-package.mk|g' \
   -e 's|\<golang/host\>|golang1.27/host|g' {} +
