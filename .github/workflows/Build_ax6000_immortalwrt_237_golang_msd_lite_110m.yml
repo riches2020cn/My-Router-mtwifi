@@ -244,7 +244,7 @@ jobs:
           exit 1
         fi
           
-        # 2. 修改 package/dae 和 package/passwall-packages 下所有 Makefile 路径指向 golang1.27
+        # 2. 修改 package/dae 和 package/passwall-packages 目录下所有 Makefile 路径指向 golang1.27
         TARGET_DIRS=()
         [ -d "package/dae" ] && TARGET_DIRS+=("package/dae")
         [ -d "package/passwall-packages" ] && TARGET_DIRS+=("package/passwall-packages")
