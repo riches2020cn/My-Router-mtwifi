@@ -18,7 +18,10 @@ on:
     #- cron: '10 21 19 7 *'  
     # UTC 时间对应北京时间：每月2、9、16、23日，早上5点10分 开始编译    
     #- cron: '10 21 1,8,15,22 * *'
-    
+
+permissions:
+  contents: write
+
 jobs:
   build:
     # 建议 immortalwrt 使用低版本，更容易编译成功
