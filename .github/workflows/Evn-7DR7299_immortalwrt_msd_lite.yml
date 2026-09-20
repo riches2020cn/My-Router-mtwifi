@@ -1,4 +1,4 @@
-name: Evn-7DR7299_immortalwrt_golang_msd_lite
+name: Evn-7DR7299_immortalwrt_msd_lite
 
 on:
   workflow_dispatch:
