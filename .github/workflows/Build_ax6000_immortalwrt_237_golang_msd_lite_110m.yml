@@ -18,7 +18,10 @@ on:
     #- cron: '10 20 19 7 *'  
     # UTC 时间对应北京时间：每月2、9、16、23日，早上4点10分 开始编译    
     #- cron: '10 20 1,8,15,22 * *'
-    
+
+permissions:
+  contents: write
+   
 jobs:
   build:
     # 建议 immortalwrt 使用低版本，更容易编译成功
@@ -382,10 +385,11 @@ jobs:
 
         # 4. 打包所有编译生成的 ipk/apk 插件为 Packages.tar.gz
         if [ -d "/builder/openwrt/bin/packages" ]; then
-          mkdir -p /tmp/pkg_temp
-          find /builder/openwrt/bin/packages -type f -name "*.ipk" -exec cp -f {} /tmp/pkg_temp/ \;
-          tar -zcf /tmp/firmware/Packages.tar.gz -C /tmp pkg_temp
-          rm -rf /tmp/pkg_temp
+            mkdir -p /tmp/pkg_temp
+            # 同时兼容 ipk 和 apk 两种安装包格式
+            find /builder/openwrt/bin/packages -type f \( -name "*.ipk" -o -name "*.apk" \) -exec cp -f {} /tmp/pkg_temp/ \;
+            tar -zcf /tmp/firmware/Packages.tar.gz -C /tmp pkg_temp
+            rm -rf /tmp/pkg_temp
         fi
 
         # 5. 精准清理不需要的临时 Packages 文件夹和多余的中间 buildinfo
