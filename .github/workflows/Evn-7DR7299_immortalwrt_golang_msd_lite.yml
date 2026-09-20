@@ -1,4 +1,4 @@
-name: Build-6.18
+name: Evn-7DR7299_immortalwrt_golang_msd_lite
 
 on:
   workflow_dispatch:
