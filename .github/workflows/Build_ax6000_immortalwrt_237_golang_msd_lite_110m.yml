@@ -262,9 +262,9 @@ jobs:
         echo "=== 检查是否成功替换 golang1.27 版本 ==="
         GOLANG_TARGET_FILE="feeds/packages/lang/golang1.27/golang1.27/Makefile"
         if [ -f "$GOLANG_TARGET_FILE" ] && grep -q "PKG_NAME:=golang1.27" "$GOLANG_TARGET_FILE"; then
-          echo "SUCCESS: 验证通过，$GOLANG_TARGET_FILE 包含 PKG_NAME:=golang1.27"
+          echo "SUCCESS: 验证通过，在 feeds/packages/lang/golang1.27/golang1.27/Makefile 文件中，包含 PKG_NAME:=golang1.27"
         else
-          echo "ERROR: golang1.27 验证失败！未在 $GOLANG_TARGET_FILE 中找到 PKG_NAME:=golang1.27"
+          echo "ERROR: golang1.27 验证失败！在 feeds/packages/lang/golang1.27/golang1.27/Makefile 文件中，未找到 PKG_NAME:=golang1.27"
           exit 1
         fi
 
@@ -272,9 +272,9 @@ jobs:
         echo "=== 检查 package/passwall-packages 下 所有的 Makefile 文件中的 Go 编译依赖指向 golang1.27 ==="
         xray_Makefile="package/passwall-packages/xray-core/Makefile"
         if [ -f "$xray_Makefile" ] && grep -q "golang1.27/golang-package.mk" "$xray_Makefile"; then
-          echo "SUCCESS: $xray_Makefile 中的 golang-package.mk 路径已成功修改为 golang1.27！"
+          echo "SUCCESS: 在 package/passwall-packages/xray-core/Makefile 找到 golang-package.mk 路径已成功修改为 golang1.27！"
         else
-          echo "ERROR: $xray_Makefile 中的 golang-package.mk 路径替换失败！"
+          echo "ERROR: 在 package/passwall-packages/xray-core/Makefile 文件中，未找到 golang-package.mk 路径替换失败！"
           exit 1
         fi
 
