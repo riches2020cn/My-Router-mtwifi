@@ -207,7 +207,7 @@ jobs:
     #    mv /tmp/OpenClash/luci-app-openclash package/
 
         # 删除临时目录
-    #    rm -rf /tmp/OpenClash && rm -rf tmp
+    #    rm -rf tmp
 
        # ======== 2. 编译 Passwall 最新版（使用 package 编译法，更新和安装 feeds 命令之后）推荐 =========
        # 不推荐使用写入 ./feeds.conf.default 编译法
