@@ -215,13 +215,13 @@ jobs:
     - name: Import Official Recommended Passwall
       working-directory: /builder/openwrt
       run: |
-        # 移除 openwrt feeds 自带的核心库
+        # 移除 openwrt feeds 自带的核心库，比 Passwall 官方命令末尾多了一个“haproxy”
         rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
-        [ ! -d "package/passwall-packages" ] && git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
+        git clone https://github.com/Openwrt-Passwall/openwrt-passwall-packages package/passwall-packages
 
         # 移除 openwrt feeds 过时的luci版本
         rm -rf feeds/luci/applications/luci-app-passwall
-        [ ! -d "package/passwall-luci" ] && git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
+        git clone https://github.com/Openwrt-Passwall/openwrt-passwall package/passwall-luci
 
         # 删除临时目录
         rm -rf tmp
@@ -237,10 +237,11 @@ jobs:
         # 拉取的第三方 luci-app-daed，修改 package/dae/daed/Makefile 文件，添加一条命令：GO_PKG_INSTALL_EXTRA:=webrender/web，告诉 OpenWrt 的 Golang 编译工具链，在编译 daed 时，除了编译 Go 代码，还要把 Web 前端静态网页资源（UI 界面 webrender/web）一并打包进去
         DAED_MAKEFILE="package/dae/daed/Makefile"
         if [ -f "$DAED_MAKEFILE" ]; then
-          echo "[INFO] 找到 $DAED_MAKEFILE，追加 webrender/web 配置"
+          echo "[INFO] 找到 package/dae/daed/Makefile 文件，追加 webrender/web 配置成功！"
           sed -i '/^GO_PKG:=github.com\/daeuniverse\/dae-wing$/a GO_PKG_INSTALL_EXTRA:=webrender/web' "$DAED_MAKEFILE"
         else
-          echo "[WARNING] 未找到 $DAED_MAKEFILE，跳过追加静态资源参数！"
+          echo "ERROR: 未找到 package/dae/daed/Makefile 文件，无法追加命令：GO_PKG_INSTALL_EXTRA:=webrender/web，终止编译！"
+          exit 1
         fi
           
         # 2. 修改 package/dae 和 package/passwall-packages 下所有 Makefile 路径指向 golang1.27
@@ -253,7 +254,8 @@ jobs:
             -e 's|\<golang/golang-package.mk\>|golang1.27/golang-package.mk|g' \
             -e 's|\<golang/host\>|golang1.27/host|g' {} +
         else
-          echo "WARNING: 未找到 package/dae 或 package/passwall-packages 目录，忽略即可！"
+          echo "ERROR: 未找到 package/dae 或 package/passwall-packages 目录，无法进行路径替换，终止编译！"
+          exit 1
         fi
 
         # 3. 检查是否成功替换 golang1.27 版本，如果退出，说明 golang 版本与 Passwall 要求的 golang 版本对不上。通过以下方法确认版本已经不一致，请打开 https://github.com/Openwrt-Passwall/openwrt-passwall-packages，打开 geoview/Makefile 文件，搜索“golang”并获取相关路径：/feeds/packages/lang/golang/golang-package.mk，确认能在本地仓库 golang1.27 目录下找到“golang-package.mk”文件，且路径一致，否则就是版本对不上（将 golang1.27 目录复制到 /feeds/packages/lang/ 目录下与 golang 并存）
@@ -266,7 +268,7 @@ jobs:
           exit 1
         fi
 
-        # 4. 检查修改结果（抽查核心组件 xray-core 的Makefile文件指向 golang1.27），检查失败会自动退出
+        # 4. 检查修改结果（抽查核心组件 xray-core 的 Makefile 文件指向 golang1.27），检查失败自动退出
         echo "=== 检查 package/passwall-packages 下 所有的 Makefile 文件中的 Go 编译依赖指向 golang1.27 ==="
         xray_Makefile="package/passwall-packages/xray-core/Makefile"
         if [ -f "$xray_Makefile" ] && grep -q "golang1.27/golang-package.mk" "$xray_Makefile"; then
