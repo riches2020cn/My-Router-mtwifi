@@ -9,7 +9,7 @@ sed -i 's/192.168.6.1/192.168.2.1/g' package/base-files/files/bin/config_generat
 sed -i -E 's|^root:[^:]*:|root::|' package/base-files/files/etc/shadow
 
 # 移除要替换的包（来自官方 feeds）
-echo "[diy] 移除 feeds 中的旧版app"（必须移除 dae、luci-app-dae、daed、luci-app-daed，拉取第三方 luci-app-daed（三合一）来替换，再修改它的 Makefile 文件指向 golang1.27）
+echo "[diy] 移除 feeds 中的旧版app"（必须移除源码自带的 dae、luci-app-dae、daed、luci-app-daed，拉取第三方 luci-app-daed（三合一）来替换，再修改它的 Makefile 文件指向 golang1.27）
 # rm -rf feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed package/feeds/luci/luci-app-dae package/feeds/luci/luci-app-daed
 # 下方第一条：删除命令来自上方的修改，只删除了 mosdns、smartdns并注释掉下方3条 clone_if_missing 对应命令，其他必须保留。
 # 下方第一条：dae、luci-app-dae 和 daed、luci-app-daed 必须保留，还必须保留下方 clone_if_missing 相关拉取命令，重新拉取第三方 luci-app-daed（是 dae + daed + luci-app 三合一），它们关联 golang1.27 升级。
@@ -39,7 +39,7 @@ clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall-packages "
 clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     package/passwall-luci
 #clone_if_missing https://github.com/EasyTier/luci-app-easytier.git     ""     package/luci-app-easytier
 
-# 在拉取的第三方 luci-app-daed，修改 package/dae/daed/Makefile 文件，添加一条命令：GO_PKG_INSTALL_EXTRA:=webrender/web，告诉 OpenWrt 的 Golang 编译工具链，在编译 daed 时，除了编译 Go 代码，还要把 Web 前端静态网页资源（UI 界面 webrender/web）一并打包进去。
+# 拉取的第三方 luci-app-daed，修改 package/dae/daed/Makefile 文件，添加一条命令：GO_PKG_INSTALL_EXTRA:=webrender/web，告诉 OpenWrt 的 Golang 编译工具链，在编译 daed 时，除了编译 Go 代码，还要把 Web 前端静态网页资源（UI 界面 webrender/web）一并打包进去。
 sed -i '/^GO_PKG:=github.com\/daeuniverse\/dae-wing$/a GO_PKG_INSTALL_EXTRA:=webrender/web' \
   package/dae/daed/Makefile
 
