@@ -10,9 +10,7 @@ sed -i -E 's|^root:[^:]*:|root::|' package/base-files/files/etc/shadow
 
 # 移除要替换的包（来自官方 feeds）
 echo "[diy] 移除 feeds 中的旧版app"
-#rm -rf feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed package/feeds/luci/luci-app-dae package/feeds/luci/luci-app-daed
-# 下方代码由上方代码修改而来，只删除 msd_lite 主程序
-rm -rf feeds/packages/net/msd_lite
+rm -rf feeds/packages/net/mosdns feeds/packages/net/msd_lite feeds/packages/net/smartdns feeds/packages/net/dae feeds/packages/net/daed package/feeds/luci/luci-app-dae package/feeds/luci/luci-app-daed
 rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
 rm -rf feeds/luci/applications/luci-app-passwall
 
@@ -27,15 +25,18 @@ clone_if_missing() {
   fi
 }
 
-#clone_if_missing https://github.com/sbwml/luci-app-mosdns              ""     package/luci-app-mosdns
+clone_if_missing https://github.com/sbwml/luci-app-mosdns              ""     package/luci-app-mosdns
 clone_if_missing https://github.com/ximiTech/luci-app-msd_lite         ""     package/luci-app-msd_lite
 clone_if_missing https://github.com/ximiTech/msd_lite                  ""     package/msd_lite
-#clone_if_missing https://github.com/pymumu/luci-app-smartdns           ""     package/luci-app-smartdns
-#clone_if_missing https://github.com/pymumu/openwrt-smartdns            ""     package/smartdns
-#clone_if_missing https://github.com/QiuSimons/luci-app-daed            ""     package/dae
+clone_if_missing https://github.com/pymumu/luci-app-smartdns           ""     package/luci-app-smartdns
+clone_if_missing https://github.com/pymumu/openwrt-smartdns            ""     package/smartdns
+clone_if_missing https://github.com/QiuSimons/luci-app-daed            ""     package/dae
 clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall-packages "" package/passwall-packages
 clone_if_missing https://github.com/Openwrt-Passwall/openwrt-passwall  ""     package/passwall-luci
-#clone_if_missing https://github.com/EasyTier/luci-app-easytier.git     ""     package/luci-app-easytier
+clone_if_missing https://github.com/EasyTier/luci-app-easytier.git     ""     package/luci-app-easytier
+
+sed -i '/^GO_PKG:=github.com\/daeuniverse\/dae-wing$/a GO_PKG_INSTALL_EXTRA:=webrender/web' \
+  package/dae/daed/Makefile
 
 # 修改版本为编译日期
 DATE_VERSION="$(date +%Y.%m.%d)"
