@@ -233,7 +233,7 @@ jobs:
     - name: 修改 passwall-packages & daed 目录下所有 Makefile 文件中 golang 路径指向 golang1.27
       working-directory: /builder/openwrt
       run: |
-        # 1. 必须移除源码自带的 dae、luci-app-dae、daed、luci-app-daed，拉取第三方 luci-app-daed（三合一）来替换，再修改它的 Makefile 文件指向 golang1.27
+        # 1. 必须移除源码自带的 dae、luci-app-dae、daed、luci-app-daed，拉取第三方 luci-app-daed（二合一）来替换，再修改它的 Makefile 文件指向 golang1.27
         rm -rf feeds/packages/net/dae package/feeds/luci/luci-app-dae feeds/packages/net/daed package/feeds/luci/luci-app-daed
         [ ! -d "package/dae" ] && git clone --depth=1 https://github.com/QiuSimons/luci-app-daed package/dae
 
