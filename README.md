@@ -20,7 +20,7 @@
 
 2. 云编译Evn脚本说明：
 - Evn脚本修改自 WoChen5770 仓库：https://github.com/WoChen5770/openwrt-7dr7299
-- 在 scripts/Redmi-AX6000 目录下包含红米“AX6000-110m大分区”文件和 config 自定义配置
+- 在 scripts/Redmi-AX6000 目录下包含红米“AX6000-110m大分区”文件和 config 配置文件
 - 在根目录升级 golang1.27 版本，必须修改 scripts/diy-6.6.sh 文件
 - 在 scripts/diy-script.sh 文件中，可修改路由器默认IP地址
 
