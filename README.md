@@ -7,8 +7,6 @@
 
 <h1 align="center">云编译红米AX6000-uboot/110m大分区</h1>
 
----
-
 ## 📖 云编译 红米AX6000-LEDE/110m大分区
 
 1. 使用脚本“Build_ax6000_LEDE_110m.yml”
