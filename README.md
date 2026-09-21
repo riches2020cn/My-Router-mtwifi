@@ -23,7 +23,7 @@
 - 在 scripts/Redmi-AX6000 目录包含红米“AX6000-110m大分区”文件和 config 配置文件
 - 在根目录升级 golang1.27 版本，必须修改 scripts/diy-6.6.sh 文件
 - 在 scripts/diy-script.sh 文件中，可修改路由器默认IP地址
-- 在 configs 目录只包含TP-Link 7DR7299 基础配置文件 config 和 自定义配置文件 CUSTOMIZE.txt
+- 在 configs 目录只包含 TP-Link 7DR7299 基础配置文件“config”和可自定义配置文件“CUSTOMIZE.txt”
 ---
 
 ## 📖 红米AX6000-LEDE/110m大分区（开源）
