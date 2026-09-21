@@ -2,10 +2,6 @@ name: Auto Clean Releases & Workflows
 
 on:
   workflow_run:
-    # ======================================================================================
-    # 👇【修改区】监控多个脚本（必须与编译脚本顶部的 name: 完全一致,，名称双引号，逗号隔离+空一格）
-    # ======================================================================================
-    workflows: ["Build_x86_EFI_LEDE", "Build_ax6000_immortalwrt","Build_ax6000_immortalwrt_237_golang_msd_lite_110m", "Build_ax6000_immortalwrt_237_golang_msd_lite_110m"]
     types:
       - completed
   workflow_dispatch: # 支持在 Actions 页面手动点击触发
@@ -27,6 +23,4 @@ jobs:
           delete_workflows: true
           # 历史工作流运行记录保留的天数（超过天数的日志自动删掉，节省空间）
           workflows_keep_day: 14
-          # 清理时匹配的 Release Tag 前缀，只清理特定的固件，避免误删其他发布（选填，为空则清理整个仓库）
-          # release_drop_prefix: "x86_EFI_LEDE"
           gh_token: ${{ secrets.GITHUB_TOKEN }}
