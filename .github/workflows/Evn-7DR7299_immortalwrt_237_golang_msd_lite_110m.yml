@@ -11,8 +11,11 @@ on:
         options:
           - 'false'
           - 'true'
-#  schedule:
-#    - cron: '0 18 */3 * *'
+  schedule:
+    # UTC 时间对应北京时间（UTC+8=北京时间）：7月20日，早上4点10分 开始编译
+    - cron: '10 20 22 9 *'  
+    # UTC 时间对应北京时间：每月2、9、16、23日，早上4点10分 开始编译    
+    #- cron: '10 20 1,8,15,22 * *'
 
 permissions: write-all
 
