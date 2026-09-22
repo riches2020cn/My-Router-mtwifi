@@ -12,7 +12,7 @@ cp -rf "$GOLANG126_SRC_DIR/." "$GOLANG126_FEED_DIR/"
 
 # passwall 和 daed 使用 golang1.27/host（修改 package/dae 和 package/passwall-packages 目录下所有 Makefile 文件，指向 golang1.27）
 #find package/dae package/passwall-packages -name "Makefile" -type f -exec sed -i \
-# 下方第一条命令修改自上方，中间少了一个“package/dae”，如要使用 luci-app-daed，请使用上方命令，并修改“scripts.sh”脚本
+# 下方第一条命令修改自上方，中间少了一个“package/dae”，如要使用 luci-app-daed，请使用上方命令，还需要修改“diy-script.sh”脚本
 find package/passwall-packages -name "Makefile" -type f -exec sed -i \
   -e 's|\<golang/golang-package.mk\>|golang1.27/golang-package.mk|g' \
   -e 's|\<golang/host\>|golang1.27/host|g' {} +
