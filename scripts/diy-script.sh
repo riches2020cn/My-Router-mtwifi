@@ -15,7 +15,7 @@ echo "[diy] 移除 feeds 中的旧版app"
 # 下方第一条：若要使用“dae、luci-app-dae”和“daed、luci-app-daed”2个插件必须保留，还必须保留下方 clone_if_missing 相关拉取命令，重新拉取第三方 luci-app-daed（是 dae + daed + luci-app 二合一），再修改它的 Makefile 文件指向 golang1.27，它们关联 golang1.27 升级
 # 若想使用源码自带 msd_lite ，只需删除 feeds/packages/net/msd_lite，并注释掉下方2条相关的clone_if_missing.....msd_lite 和 clone_if_missing.....luci-app-msd_lite 即可
 rm -rf feeds/packages/net/msd_lite
-rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,haproxy}
+rm -rf feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 rm -rf feeds/luci/applications/luci-app-passwall
 
 # 克隆第三方插件源（如果目录已存在则跳过，避免重复执行报错）
