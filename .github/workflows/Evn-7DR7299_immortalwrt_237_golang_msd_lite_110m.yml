@@ -21,8 +21,8 @@ env:
   REPO_BRANCH: mt798x-mt799x-6.6-mtwifi
   CONFIG_BASE: configs/6.6.txt
   CONFIG_CUSTOM: configs/CUSTOMIZE.txt
-  DIY_SCRIPT: scripts/diy-script-golang.sh
-  DIY_SCRIPT_2: scripts/diy-6.6-golang.sh
+  DIY_SCRIPT: scripts/diy-script.sh
+  DIY_SCRIPT_2: scripts/diy-6.6.sh
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: false
   FIRMWARE_RELEASE: true
