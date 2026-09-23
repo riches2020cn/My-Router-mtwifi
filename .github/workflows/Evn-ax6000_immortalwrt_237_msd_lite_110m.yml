@@ -134,7 +134,7 @@ jobs:
           cat "$CUSTOM_FILE" >> "$OPENWRT_PATH/.config"
           echo "Successfully appended custom config from: $CUSTOM_FILE"
         else
-          echo "Error: Custom config file $CUSTOM_FILE not found!" && exit 1
+          echo "Error: 目录 scripts/Redmi-AX6000/CUSTOMIZE-AX6000 没找到该文件!" && exit 1
         fi
 
         # 3. 执行 scripts/ 目录下的 DIY 脚本
