@@ -26,7 +26,7 @@
 - 在根目录升级 golang1.27 版本，必须修改“scripts/diy-6.6.sh”文件
 - 在 scripts/diy-script.sh 文件中，可修改路由器默认IP地址
 - 在 configs 目录只包含 TP-Link 7DR7299 基础配置文件“config”，可自定义配置文件“CUSTOMIZE.txt”
-- 
+
 ---
 
 
