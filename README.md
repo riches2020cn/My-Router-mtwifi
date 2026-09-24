@@ -20,7 +20,7 @@
 
 2. 云编译Evn脚本说明：
 - Evn脚本修改自 WoChen5770 仓库：https://github.com/WoChen5770/openwrt-7dr7299
-- Evn脚本注释掉第三方 luci-app-daed（二合一插件）来替换“dae、luci-app-dae”和“daed、luci-app-daed”2个插件，在 scripts/diy-script.sh 文件删除命令中，保留 haproxy（负载均衡），可编入固件（不推荐）
+- Evn脚本注释掉第三方 luci-app-daed（用来替换“dae、luci-app-dae”和“daed、luci-app-daed”2个插件），在 scripts/diy-script.sh 文件删除命令中，保留 haproxy（负载均衡），可编入固件（不推荐）
 - Evn脚本拉取第三方来替换 msd_lite插件，若要编译源码自带，请修改“scripts/diy-script.sh”文件，注释掉相关命令
 - 在 scripts/Redmi-AX6000 目录下包含红米“AX6000-110m大分区”文件和 config 配置文件
 - 在根目录升级 golang1.27 版本，必须修改“scripts/diy-6.6.sh”文件
