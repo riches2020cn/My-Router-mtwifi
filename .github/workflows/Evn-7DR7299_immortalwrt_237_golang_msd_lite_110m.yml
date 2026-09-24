@@ -100,6 +100,8 @@ jobs:
         [ -e "$GITHUB_WORKSPACE/$DIY_SCRIPT" ] && chmod +x "$GITHUB_WORKSPACE/$DIY_SCRIPT" && cd "$OPENWRT_PATH" && "$GITHUB_WORKSPACE/$DIY_SCRIPT"
         [ -e "$GITHUB_WORKSPACE/$DIY_SCRIPT_2" ] && chmod +x "$GITHUB_WORKSPACE/$DIY_SCRIPT_2" && cd "$OPENWRT_PATH" && "$GITHUB_WORKSPACE/$DIY_SCRIPT_2"        
         cd "$OPENWRT_PATH"
+        # 更改主机名
+        sed -i 's/ImmortalWrt/TL-7DR7299/g' package/base-files/files/bin/config_generate
         make defconfig
 
     - name: Generate Variables(生成变量)
