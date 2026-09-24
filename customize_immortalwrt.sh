@@ -9,8 +9,11 @@
 #1. Modify default IP
 sed -i 's/192.168.1.1/192.168.2.1/g' /builder/openwrt/package/base-files/files/bin/config_generate
 
-#2. 修改默认皮肤
+#2. Clear the login password
+#sed -i -E 's|^root:[^:]*:|root::|' package/base-files/files/etc/shadow
+
+#3. 修改默认皮肤
 #sed -i 's/+luci-theme-bootstrap/+luci-theme-argon/g' /builder/openwrt/feeds/luci/collections/luci/Makefile
 
-#3. Replace with JerryKuKu’s Argon
+#4. Replace with JerryKuKu’s Argon
 #rm /builder/openwrt/package/lean/luci-theme-argon -rf
