@@ -154,7 +154,10 @@ jobs:
         #  "$GITHUB_WORKSPACE/$DIY_SCRIPT_2"
         #fi
 
-        # 4. 补全展开配置
+        # 4. 更改主机名
+        sed -i 's/ImmortalWrt/Redmi-AX6000/g' package/base-files/files/bin/config_generate
+        
+        # 5. 补全展开配置
         make defconfig
 
     - name: Generate Variables(生成变量)
