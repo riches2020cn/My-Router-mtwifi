@@ -285,17 +285,73 @@ jobs:
 
     - name: Build firmware
       working-directory: /builder/openwrt
+      # 编译超过 5 小时，自动退出编译，防止后台静默卡死
+      timeout-minutes: 300
+      env:
+        # 禁用 Git 终端交互提示，遇到需要输入密码或确认时，自动退出编译，防止后台静默卡死
+        GIT_TERMINAL_PROMPT: 0
+        # 禁用 Git 隐式文件锁，避免在多进程/并发 Git 操作时因锁争用导致的异常
+        GIT_OPTIONAL_LOCKS: 0
       run: |
         echo -e "$(nproc) thread build."
-        # 先尝试多线程全速编译，如果失败（返回非 0 状态码），则触发单线程编译，并打印最详细的 V=s 日志
+        # 先尝试多线程全速编译，如果失败（返回非 0 状态码），则触发单线程编译，重新编译并输出详细日志
         make -j$(nproc) || make -j1 V=s
 
     - name: Check Space
       run: |
         df -h
+
+    - name: Organize Files (整理固件与插件)
+      id: organize
+      working-directory: /builder/openwrt
+      if: success() && !cancelled()
+      run: |
+        # 1. 创建专门存放固件的临时目录
+        mkdir -p /tmp/firmware
+
+        # 2. 定位 targets 编译产物目录（在绝对路径 /builder/openwrt/bin/targets/ 下寻找）
+        TARGET_DIR=$(find /builder/openwrt/bin/targets/ -maxdepth 2 -mindepth 2 -type d | head -n 1)
         
-    - name: Upload artifact
-      uses: actions/upload-artifact@v7
+        if [ -d "$TARGET_DIR" ]; then
+          # 复制所有 targets 镜像、itb 文件、manifest、bl2.bin、sha256sums 等
+          cp -r $TARGET_DIR/* /tmp/firmware/ 2>/dev/null || true
+        fi
+
+        # 3. 复制并重命名配置文件
+        cp /builder/openwrt/.config /tmp/firmware/config.buildinfo 2>/dev/null || true
+        cp /builder/openwrt/.config /tmp/firmware/build.config 2>/dev/null || true
+
+        # 4. 打包所有编译生成的 ipk/apk 插件为 Packages.tar.gz
+        if [ -d "/builder/openwrt/bin/packages" ]; then
+            mkdir -p /tmp/pkg_temp
+            # 同时兼容 ipk 和 apk 两种安装包格式
+            find /builder/openwrt/bin/packages -type f \( -name "*.ipk" -o -name "*.apk" \) -exec cp -f {} /tmp/pkg_temp/ \;
+            tar -zcf /tmp/firmware/Packages.tar.gz -C /tmp pkg_temp
+            rm -rf /tmp/pkg_temp
+        fi
+
+        # 5. 精准清理不需要的临时 Packages 文件夹和多余的中间 buildinfo
+        rm -rf /tmp/firmware/packages /tmp/firmware/feeds.buildinfo /tmp/firmware/version.buildinfo 2>/dev/null || true
+
+        # ===============================================================
+        # 👇【修改区】修改成脚本的名称
+        FIRMWARE_TYPE="Build_ax6000_immortalwrt_237_110m"
+        # ===============================================================
+
+        # 6. 将 FIRMWARE_TYPE 连同 TAG 和 NAME 一起写入 GITHUB_ENV 传递给后续步骤
+        echo "FIRMWARE_TYPE=${FIRMWARE_TYPE}" >> $GITHUB_ENV
+        echo "RELEASE_TAG=${FIRMWARE_TYPE}_$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_ENV
+        echo "RELEASE_NAME=${FIRMWARE_TYPE} [$(date +'%Y.%m.%d')]" >> $GITHUB_ENV
+
+    - name: Upload firmware to Release (发布至 GitHub Release)
+      uses: softprops/action-gh-release@v3
+      if: success() && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: Build_ax6000_immortalwrt_237_110m
-        path: /builder/openwrt/bin
+        tag_name: '${{ env.RELEASE_TAG }}'
+        name: '${{ env.RELEASE_NAME }}'
+        body: |
+          ### 固件信息
+          ${{ env.FIRMWARE_TYPE }}
+        files: /tmp/firmware/*
