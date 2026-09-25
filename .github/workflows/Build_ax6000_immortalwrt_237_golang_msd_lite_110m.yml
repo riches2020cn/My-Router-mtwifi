@@ -349,7 +349,7 @@ jobs:
 
     - name: Build firmware
       working-directory: /builder/openwrt
-      # 编译超过 4 小时，自动退出编译，防止后台静默卡死
+      # 编译超过 5 小时，自动退出编译，防止后台静默卡死
       timeout-minutes: 300
       env:
         # 禁用 Git 终端交互提示，遇到需要输入密码或确认时，自动退出编译，防止后台静默卡死
