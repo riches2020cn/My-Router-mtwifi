@@ -10,10 +10,10 @@
 ## 📖 脚本名称包含“237”都是闭源驱动（推荐）
 
 1. 名称包含“237”：闭源驱动（推荐）
-- 名称带有“Orign”的脚本，编译源码自带 Passwall 旧版（编译默认自带 OpenClash）
-- 名称包含“golang”：升级 golang1.27 版本，编译 Passwall 最新版（编译默认自带 OpenClash）
-- 名称包含“msd_lite”：编入第三方“msd_lite”（编译默认自带 OpenClash）
-- 名称包含“Env”：使用变量 和 引用 scripts 文件夹（编译默认自带 OpenClash）
+- 名称带有“Orign”的脚本，编译源码自带 Passwall 旧版（默认源码自带 OpenClash）
+- 名称包含“golang”：升级 golang1.27 版本，编译 Passwall 最新版（默认源码自带 OpenClash）
+- 名称包含“msd_lite”：编入第三方“msd_lite”（默认源码自带 OpenClash）
+- 名称包含“Env”：使用变量 和 引用 scripts 文件夹（默认源码自带 OpenClash）
 ---
 
 ## 📖 Env脚本说明
