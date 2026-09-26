@@ -10,18 +10,19 @@
 ## 📖 脚本名称包含“237”都是闭源驱动（推荐）
 
 1. 名称包含“237”：闭源驱动（推荐）
-- 名称包含“Evn”：使用变量 和 引用 scripts 文件夹
+- 名称包含“Env”：使用变量 和 引用 scripts 文件夹
 - 名称包含“msd_lite”：编入第三方“msd_lite”
 - 名称包含“golang”：升级 golang1.27 版本，才能编译 Passwall 最新版
-
+- 名称带有“immortalwrt_237”，但是没有“golang”的脚本，都是编译源码自带 Passwall 旧版
+- 名称开头“Env” 和带有“golang”的脚本，都是编译 Passwall 最新版
 ---
 
-## 📖 Evn脚本说明
+## 📖 Env脚本说明
 
-2. 云编译Evn脚本说明：
-- Evn脚本修改自 WoChen5770 仓库：https://github.com/WoChen5770/openwrt-7dr7299
-- Evn脚本注释掉第三方 luci-app-daed（用来替换“dae、luci-app-dae”和“daed、luci-app-daed”2个插件），在 scripts/diy-script.sh 文件删除命令中，保留 haproxy（负载均衡），可编入固件（不推荐）
-- Evn脚本拉取第三方来替换 msd_lite插件，若要编译源码自带，请修改“scripts/diy-script.sh”文件，注释掉相关命令
+2. 云编译Env脚本说明：
+- Env脚本修改自 WoChen5770 仓库：https://github.com/WoChen5770/openwrt-7dr7299
+- Env脚本注释掉第三方 luci-app-daed（用来替换“dae、luci-app-dae”和“daed、luci-app-daed”2个插件），在 scripts/diy-script.sh 文件删除命令中，保留 haproxy（负载均衡），可编入固件（不推荐）
+- Env脚本拉取第三方来替换 msd_lite插件，若要编译源码自带，请修改“scripts/diy-script.sh”文件，注释掉相关命令
 - 在 scripts/Redmi-AX6000 目录下包含红米“AX6000-110m大分区”文件和 config 配置文件
 - 在根目录升级 golang1.27 版本，必须修改“scripts/diy-6.6.sh”文件
 - 在 scripts/diy-script.sh 文件中，可修改路由器默认IP地址
