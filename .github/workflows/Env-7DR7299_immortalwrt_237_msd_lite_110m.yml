@@ -97,8 +97,8 @@ jobs:
         # 同时必须注释掉上方的“Env”变量区：#DIY_SCRIPT_2: scripts/diy-6.6.sh 命令
         #[ -e "$GITHUB_WORKSPACE/$DIY_SCRIPT_2" ] && chmod +x "$GITHUB_WORKSPACE/$DIY_SCRIPT_2" && cd "$OPENWRT_PATH" && "$GITHUB_WORKSPACE/$DIY_SCRIPT_2"        
 
-        cd "$OPENWRT_PATH"
         # 更改主机名
+        cd "$OPENWRT_PATH"
         sed -i 's/ImmortalWrt/TL-7DR7299/g' package/base-files/files/bin/config_generate
         make defconfig
 
