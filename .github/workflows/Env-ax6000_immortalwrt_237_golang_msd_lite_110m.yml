@@ -120,14 +120,7 @@ jobs:
 
     - name: Load Custom Configuration(加载自定义配置)
       run: |
-        # 1. 如果根目录下有自定义 files 文件夹，复制到源码目录
-        if [ -d "$GITHUB_WORKSPACE/files" ]; then
-          mkdir -p "$OPENWRT_PATH/files"
-          cp -rf "$GITHUB_WORKSPACE/files"/. "$OPENWRT_PATH/files/"
-          echo "Successfully loaded custom files."
-        fi
-
-        # 2. 追加 /scripts/Redmi-AX6000/CUSTOMIZE-AX6000.txt 到 .config
+        # 1. 追加 /scripts/Redmi-AX6000/CUSTOMIZE-AX6000.txt 到 .config
         CUSTOM_FILE="$GITHUB_WORKSPACE/${CONFIG_CUSTOM:-scripts/Redmi-AX6000/CUSTOMIZE-AX6000.txt}"
         if [ -f "$CUSTOM_FILE" ]; then
           cat "$CUSTOM_FILE" >> "$OPENWRT_PATH/.config"
@@ -136,7 +129,7 @@ jobs:
           echo "Error: 目录 scripts/Redmi-AX6000/CUSTOMIZE-AX6000 没找到该文件!" && exit 1
         fi
 
-        # 3. 执行 scripts/ 目录下的 DIY 脚本
+        # 2. 执行 scripts/ 目录下的 DIY 脚本
         cd "$OPENWRT_PATH"
 
         if [ -n "$DIY_SCRIPT" ] && [ -f "$GITHUB_WORKSPACE/$DIY_SCRIPT" ]; then
@@ -151,7 +144,7 @@ jobs:
           "$GITHUB_WORKSPACE/$DIY_SCRIPT_2"
         fi
 
-        # 4. 更改主机名
+        # 3. 更改主机名
         sed -i 's/ImmortalWrt/Redmi-AX6000/g' package/base-files/files/bin/config_generate
 
         # 5. 补全展开配置
