@@ -6,7 +6,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #=================================================
 
-name: Build_7DR7299_immortalwrt_237
+name: Build_7DR7299_immortalwrt_237_Orign
 
 # Add a button to trigger the workflow
 on: 
@@ -104,7 +104,7 @@ jobs:
       run: |
         ./scripts/feeds install -a
                 
-    - name: Configuration Customization - Build_7DR7299_immortalwrt_237 
+    - name: Configuration Customization - Build_7DR7299_immortalwrt_237_Orign 
       run: |
         # 在升级的分支，找到“Quickstart”下方：5. 看到 "# MT7986" 配置文件命令：cp -f defconfig/mt7988_mt7992.config .config 可确认该分支包含 TPLink-7DR7299 官方原厂闭源
         # 将配置文件从 defconfig 目录复制到根目录并重命名 .config，云编译的目录和官方目录不同，所以命令中必须修改路径
@@ -201,7 +201,7 @@ jobs:
 
         # ===============================================================
         # 👇【修改区】修改成脚本的名称
-        FIRMWARE_TYPE="Build_7DR7299_immortalwrt_237"
+        FIRMWARE_TYPE="Build_7DR7299_immortalwrt_237_Orign"
         # ===============================================================
 
         # 6. 将 FIRMWARE_TYPE 连同 TAG 和 NAME 一起写入 GITHUB_ENV 传递给后续步骤
