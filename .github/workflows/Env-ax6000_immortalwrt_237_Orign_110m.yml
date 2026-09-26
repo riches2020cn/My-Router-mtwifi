@@ -1,4 +1,4 @@
-name: Env-ax6000_immortalwrt_237_Default_110m
+name: Env-ax6000_immortalwrt_237_Orign_110m
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ permissions: write-all
 env:
   REPO_URL: https://github.com/padavanonly/immortalwrt-mt798x-6.6.git
   REPO_BRANCH: openwrt-24.10-6.6
-  CONFIG_CUSTOM: scripts/Redmi-AX6000/CUSTOMIZE-AX6000-Default.txt
+  CONFIG_CUSTOM: scripts/Redmi-AX6000/CUSTOMIZE-AX6000-Orign.txt
   CACHE_TOOLCHAIN: true
   UPLOAD_BIN_DIR: true
   FIRMWARE_RELEASE: true
@@ -118,8 +118,8 @@ jobs:
 
     - name: Load Custom Configuration(加载自定义配置)
       run: |
-        # 1. 追加 /scripts/Redmi-AX6000/CUSTOMIZE-AX6000-Default.txt 到 .config
-        CUSTOM_FILE="$GITHUB_WORKSPACE/${CONFIG_CUSTOM:-scripts/Redmi-AX6000/CUSTOMIZE-AX6000-Default.txt}"
+        # 1. 追加 /scripts/Redmi-AX6000/CUSTOMIZE-AX6000-Orign.txt 到 .config
+        CUSTOM_FILE="$GITHUB_WORKSPACE/${CONFIG_CUSTOM:-scripts/Redmi-AX6000/CUSTOMIZE-AX6000-Orign.txt}"
         if [ -f "$CUSTOM_FILE" ]; then
           cat "$CUSTOM_FILE" >> "$OPENWRT_PATH/.config"
           echo "Successfully appended custom config from: $CUSTOM_FILE"
