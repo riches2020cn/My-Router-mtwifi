@@ -1,4 +1,4 @@
-name: Env-ax6000_immortalwrt_237_Orign_110m
+name: Env-ax6000_immortalwrt_237_Default_110m
 
 on:
   workflow_dispatch:
