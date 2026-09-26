@@ -6,7 +6,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #=================================================
 
-name: Build_ax6000_immortalwrt_237_msd_lite_110m
+name: Build_ax6000_immortalwrt_237_msd_lite_Orign_110m
 
 # Add a button to trigger the workflow
 on: 
@@ -174,7 +174,7 @@ jobs:
         git clone https://github.com/ximiTech/msd_lite.git package/msd_lite
         git clone https://github.com/ximiTech/luci-app-msd_lite.git package/luci-app-msd_lite 
                 
-    - name: Configuration Customization - Build_ax6000_immortalwrt_237_msd_lite_110m 
+    - name: Configuration Customization - Build_ax6000_immortalwrt_237_msd_lite_Orign_110m 
       run: |
         # 在升级的分支，找到“Quickstart”下方：5. 看到 "# MT7986" 配置文件命令：cp -f defconfig/mt7986-ax6000.config .config 可确认该分支包含 红米AX6000官方原厂闭源
         # 将配置文件从 defconfig 目录复制到根目录并重命名 .config，云编译的目录和官方目录不同，所以命令中必须修改路径
@@ -271,7 +271,7 @@ jobs:
 
         # ===============================================================
         # 👇【修改区】修改成脚本的名称
-        FIRMWARE_TYPE="Build_ax6000_immortalwrt_237_msd_lite_110m"
+        FIRMWARE_TYPE="Build_ax6000_immortalwrt_237_msd_lite_Orign_110m"
         # ===============================================================
 
         # 6. 将 FIRMWARE_TYPE 连同 TAG 和 NAME 一起写入 GITHUB_ENV 传递给后续步骤
